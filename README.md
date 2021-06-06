@@ -13,7 +13,7 @@ For a successful compile were to be done some cosmetics along with some other is
 *Compile: Success.*
 * Needs verification in hardware *
 
-<p style="color:red;">Red text</p>
+<span style="color:red;">Red text</span>
 
 
 

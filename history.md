@@ -1,6 +1,5 @@
 ##20210606_js: initial version 
 
-'''
 > Executing task: C:\Users\js\.platformio\penv\Scripts\platformio.exe run <
 
 Processing wemos_d1_mini32 (platform: espressif32; board: wemos_d1_mini32; framework: arduino)

@@ -1,4 +1,4 @@
-##20210606_js: initial version 
+## 20210606_js: initial version  (beta)
 
 '''
  Executing task: C:\Users\js\.platformio\penv\Scripts\platformio.exe run 

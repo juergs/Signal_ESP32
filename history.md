@@ -1,5 +1,6 @@
 ##20210606_js: initial version 
 
+'''
 > Executing task: C:\Users\js\.platformio\penv\Scripts\platformio.exe run <
 
 Processing wemos_d1_mini32 (platform: espressif32; board: wemos_d1_mini32; framework: arduino)
@@ -75,3 +76,4 @@ Compiling .pio\build\wemos_d1_mini32\libee4\WiFiManager\WiFiManager.cpp.o
 The terminal process "C:\Users\js\.platformio\penv\Scripts\platformio.exe 'run'" terminated with exit code: 1.
 
 Terminal will be reused by tasks, press any key to close it.
+'''

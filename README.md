@@ -12,7 +12,7 @@ For a successful compile were to be done some cosmetics and correct other issues
 ### 20210606: ###
 *Compile: Failed.*
 
-lib\signalDecoder\src\signalDecoder4.cpp:52:42: error: no matching function for call to 'BitStore<750u>::BitStore()'
+
 
 
 

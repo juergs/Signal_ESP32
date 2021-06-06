@@ -1,13 +1,13 @@
 ##20210606_js: initial version 
 
 '''
-> Executing task: C:\Users\js\.platformio\penv\Scripts\platformio.exe run <
+ Executing task: C:\Users\js\.platformio\penv\Scripts\platformio.exe run 
 
 Processing wemos_d1_mini32 (platform: espressif32; board: wemos_d1_mini32; framework: arduino)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Verbose mode can be enabled via `-v, --verbose` option
 CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/wemos_d1_mini32.html
 
-PLATFORM: Espressif 32 (3.2.0) > WeMos D1 MINI ESP32
+PLATFORM: Espressif 32 (3.2.0)  WeMos D1 MINI ESP32
 
 HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
 
@@ -21,7 +21,7 @@ PACKAGES:
 
 - toolchain-xtensa32 2.50200.97 (5.2.0)
 
-LDF: Library Dependency Finder -> http://bit.ly/configure-pio-ldf
+LDF: Library Dependency Finder - http://bit.ly/configure-pio-ldf
 
 LDF Modes: Finder ~ chain, Compatibility ~ soft
 
@@ -31,55 +31,55 @@ Scanning dependencies...
 
 Dependency Graph
 
-|-- <WiFiManager> 2.0.4-beta+sha.a83ac6e
+|-- WiFiManager 2.0.4-beta+sha.a83ac6e
 
- |   |  <DNSServer> 1.1.0
+ |   |  DNSServer 1.1.0
 
- |   |   | <WiFi> 1.0
+ |   |   | WiFi 1.0
 
- |   | <ESPmDNS> 1.0
+ |   | ESPmDNS 1.0
 
- |   |   | <WiFi> 1.0
+ |   |   | WiFi 1.0
 
- |   | <Update> 1.0
+ |   | Update 1.0
 
- |   | <WebServer> 1.0
+ |   | WebServer 1.0
 
- |   |   | <WiFi> 1.0
+ |   |   | WiFi 1.0
 
- |   |   | <FS> 1.0
+ |   |   | FS 1.0
  
- |   | <WiFi> 1.0
+ |   | WiFi 1.0
 
- | <bitstore> 1.0.0
+ | bitstore 1.0.0
 
- | <output> 1.0.0
+ | output 1.0.0
 
- |   | <SPI> 1.0
+ |   | SPI 1.0
  
- |   | <WiFi> 1.0
+ |   | WiFi 1.0
 
- | <signaldecoder> 1.0.0
+ | signaldecoder 1.0.0
 
- |   | <bitstore> 1.0.0
+ |   | bitstore 1.0.0
 
- |   | <output> 1.0.0
+ |   | output 1.0.0
 
- |   |   | <SPI> 1.0
+ |   |   | SPI 1.0
 
- |   |   | <WiFi> 1.0
+ |   |   | WiFi 1.0
 
- | <SimpleFIFO> 1.0.0
+ | SimpleFIFO 1.0.0
 
- | <DNSServer> 1.1.0
+ | DNSServer 1.1.0
 
- |   | <WiFi> 1.0
+ |   | WiFi 1.0
 
- | <SPI> 1.0
+ | SPI 1.0
 
- | <WiFi> 1.0
+ | WiFi 1.0
 
- | <EEPROM> 1.0.3
+ | EEPROM 1.0.3
 
  Building in release mode
 
@@ -134,11 +134,12 @@ Dependency Graph
  Compiling .pio\build\wemos_d1_mini32\libee4\WiFiManager\WiFiManager.cpp.o
 
  [.pio\build\wemos_d1_mini32\src\main.cpp.o] Error 1
-========================================================================================================================== 
+
+ ==========================================
  
  [FAILED] Took 5.35 seconds 
  
- ==========================================================================================================================
+ =========================================
 
  The terminal process "C:\Users\js\.platformio\penv\Scripts\platformio.exe 'run'" terminated with exit code: 1.
 

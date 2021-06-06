@@ -9,6 +9,7 @@ For a successful compile were to be done some cosmetics and correct other issues
 * WifiManager, with factory-reset over serial 
 
 ## Status:
+### 20210606: ###
 *Compile: Failed.*
 \lib\signalDecoder\src\signalDecoder4.cpp: At global scope:
 d1_lib\signalDecoder\src\signalDecoder4.cpp:62:1: error: redefinition of 'SignalDetectorClass::SignalDetectorClass()'

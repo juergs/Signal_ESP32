@@ -5,7 +5,15 @@ and ported to VSCode + Platformio.
 
 For a successful compile were to be done some cosmetics and correct other issues. ;-(
 
-Changes:
+## Changes:
 * WifiManager, with factory-reset over serial 
+
+## Status:
+*Compile: Failed.*
+\lib\signalDecoder\src\signalDecoder4.cpp: At global scope:
+d1_lib\signalDecoder\src\signalDecoder4.cpp:62:1: error: redefinition of 'SignalDetectorClass::SignalDetectorClass()'
+SignalDetectorClass::SignalDetectorClass(): first(buffer), last(NULL), sd_message(4) 
+
+
 
 

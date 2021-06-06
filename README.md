@@ -11,4 +11,5 @@ For a successful compile were to be done some cosmetics along with some other is
 ## Status:
 ### 20210606: ###
 *Compile: Success.*
+
 *Needs verification in hardware*

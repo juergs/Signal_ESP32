@@ -108,8 +108,6 @@ class SignalDetectorClass
 		uint16_t 	MuSplitThresh;				
 		uint16_t 	histo[maxNumPattern];
 
-		//uint8_t message[defMaxMsgSize];
-		BitStore<defMaxMsgSize/2> sd_message;       //--- container, using 4 bit for every value stored. 
 		
 		char buf[350] = {};
 		#ifdef DEBUGGLEICH
@@ -149,6 +147,10 @@ class SignalDetectorClass
 		uint8_t 	msEqCnt;
 		bool 		MsEqSkip;
 		
+		//uint8_t message[defMaxMsgSize];
+		BitStore<defMaxMsgSize/2> sd_message;       //--- container, using 4 bit for every value stored. 
+		
+
 		//--- forwards @ signalDecoder --------
 		void addData(const uint8_t value);
 		void addPattern();

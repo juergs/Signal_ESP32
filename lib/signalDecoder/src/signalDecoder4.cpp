@@ -321,7 +321,7 @@ bool SignalDetectorClass::decode(const int16_t * pulse)
 {
 	success = false;
 	if (messageLen > 0) {
-		last = &pattern[message[messageLen - 1]];
+		last = &pattern[sd_message[messageLen - 1]];
 		lastPulse = *first;  // zum debuggen
 	} else {
 		last = NULL;
@@ -464,7 +464,7 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 		if (MsMoveCount > 0) {
 			mstart = 0;
 			while (mstart < 10) {
-				if ( sd_message[mstart + 1] == sync && message[mstart] == clock) {	// nach sync und clock von der 1.Nachricht suchen
+				if ( sd_message[mstart + 1] == sync && sd_message[mstart] == clock) {	// nach sync und clock von der 1.Nachricht suchen
 					state = syncfound;	//	sync und clock gefunden -> es muss nicht erneut nach clock und sync gesucht werden
 					break;
 				}
@@ -513,7 +513,7 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 					if ( sd_message[mstartNeu] == clock) {
 						while (mstartNeu < mstartNeu+40 && mstartNeu < (messageLen - minMessageLen))	// alle folgenden sync ueberspringen
 						{
-							if ( sd_message[mstartNeu + 2] != clock || message[mstartNeu + 3] != sync) {	// folgt kein weiterer sync?
+							if ( sd_message[mstartNeu + 2] != clock || sd_message[mstartNeu + 3] != sync) {	// folgt kein weiterer sync?
 #ifdef DEBUGDECODE
 						DBG_PRINT(F("MStart:")); DBG_PRINT(mstart);
 						DBG_PRINT(F(" new MStart:")); DBG_PRINTLN(mstartNeu);
@@ -532,7 +532,7 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 			
 			while (mend < messageLen - 1)
 			{
-				if ( sd_message[mend + 1] == sync && message[mend] == clock) {		// Ende der MS-Nachricht gefunden
+				if ( sd_message[mend + 1] == sync && sd_message[mend] == clock) {		// Ende der MS-Nachricht gefunden
 					mend -= 1;					// Previus signal is last from message
 					m_endfound = true;
 					break;
@@ -694,12 +694,12 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 					n = idxDat;
 					for (uint16_t i = mstart; i <= mend; ++i)
 					{
-						msg = message[i] + '0';
+						msg = sd_message[i] + '0';
 						if (msEqCnt > 0 && msg != buf[n]) {	// Daten vergleichen
 							msEqCnt = 0;	// Daten sind nicht gleich
 						}
 						if (msEqCnt == 0) {
-							buf[n] = message[i] + '0';
+							buf[n] = sd_message[i] + '0';
 						}
 						n++;
 					}
@@ -1011,7 +1011,7 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 					mend = minMessageLen;
 					if (mend <= messageLen) {
 						for (uint16_t i = mend; i < messageLen-1; ++i) {
-							if (abs(pattern[message[i]]) >= MuSplitThresh) {
+							if (abs(pattern[sd_message[i]]) >= MuSplitThresh) {
 								mend = i;
 								m_endfound = true;
 								//MSG_PRINT(F("MUend found="));
@@ -1141,7 +1141,7 @@ void SignalDetectorClass::processMessage(const uint8_t p_valid)
 					else {
 						for (uint16_t i = 0; i < wr_mend; ++i)
 						{
-							MSG_PRINT(message[i],HEX);
+							MSG_PRINT(sd_message[i],HEX);
 						}
 						//MSG_PRINT("HeX");
 					}
@@ -1299,7 +1299,7 @@ void SignalDetectorClass::printOut()
 	DBG_PRINTLN(); DBG_PRINT(F("Signal: "));
 	uint16_t idx;
 	for (idx = 0; idx < messageLen; ++idx) {
-		DBG_PRINT((int8_t)message[idx],DEC);
+		DBG_PRINT((int8_t)sd_message[idx],DEC);
 		//DBG_PRINT(sd_message.getValue(idx));
 
 	}
@@ -1492,7 +1492,7 @@ bool SignalDetectorClass::getSync()
 				
 				while (c < syncLenMax)
 				{
-					if ( sd_message[c + 1] == p && message[c] == clock) break;
+					if ( sd_message[c + 1] == p && sd_message[c] == clock) break;
 					c++;
 				}
 
@@ -1773,8 +1773,8 @@ const bool ManchesterpatternDecoder::doDecode() {
 		while (i < mcStartMax)
 		{
 			// Start vom MC Signal suchen, dazu long suchen. Vor dem longlow darf kein Puls groesser long sein 
-			pulseid = pdec->message[i];
-			if (pulseid == longhigh || (pulseid == longlow && pdec->pattern[pdec->message[i-1]] <= pdec->pattern[longhigh]))
+			pulseid = pdec->sd_message[i];
+			if (pulseid == longhigh || (pulseid == longlow && pdec->pattern[pdec->sd_message[i-1]] <= pdec->pattern[longhigh]))
 			{
 				bit = pulseid == longhigh ? 1 : 0;
 				mc_sync_pos = i;  // Save sync position for later
@@ -1792,16 +1792,16 @@ const bool ManchesterpatternDecoder::doDecode() {
 		ManchesterBits.addValue(bit);
 		
 		pdec->mstart = 255;
-		if (isShort(pdec->message[i - 1]) && --i > 1)
+		if (isShort(pdec->sd_message[i - 1]) && --i > 1)
 		{
 			while (i > 1)
 			{
-				if (isShort(pdec->message[i - 2]) && isShort(pdec->message[i - 1]))
+				if (isShort(pdec->sd_message[i - 2]) && isShort(pdec->sd_message[i - 1]))
 				{
 					i = i - 2;
 				} else {
 					// Letzter Durchlauf
-					if (pdec->message[i - 1] == shorthigh) 
+					if (pdec->sd_message[i - 1] == shorthigh) 
 					{
 						pdec->mstart = i - 2;
 						i = 0; // leave the while loop after adding the value
@@ -1833,7 +1833,7 @@ const bool ManchesterpatternDecoder::doDecode() {
 		// Decoding
 		while (i < pdec->messageLen)
 		{
-			const uint16_t mpi = pdec->message[i]; // Store pattern for further processing
+			const uint16_t mpi = pdec->sd_message[i]; // Store pattern for further processing
 			
 			if (isLong(mpi))
 			{
@@ -1848,9 +1848,9 @@ const bool ManchesterpatternDecoder::doDecode() {
 					{
 						break;
 					}
-					else if (pdec->message[i+1] != shorthigh)
+					else if (pdec->sd_message[i+1] != shorthigh)
 					{
-						if (pdec->message[i+1] == longhigh) pdec->mcValid = false;     // invalid, nach shortlow muss shorthigh folgen
+						if (pdec->sd_message[i+1] == longhigh) pdec->mcValid = false;     // invalid, nach shortlow muss shorthigh folgen
 						break;
 					}
 				}
@@ -1860,9 +1860,9 @@ const bool ManchesterpatternDecoder::doDecode() {
 					{
 						break;
 					}
-					else if (pdec->message[i+1] != shortlow)
+					else if (pdec->sd_message[i+1] != shortlow)
 					{
-						if (pdec->message[i+1] == longlow) pdec->mcValid = false;     // invalid, nach shorthigh muss shortlow folgen
+						if (pdec->sd_message[i+1] == longlow) pdec->mcValid = false;     // invalid, nach shorthigh muss shortlow folgen
 						break;
 					}
 				}
@@ -2152,7 +2152,7 @@ const bool ManchesterpatternDecoder::isManchester()
 				int16_t z = 0;
 				while (z < pdec->messageLen)
 				{
-					const uint8_t mpz = pdec->message[z]; // Store pattern for further processing
+					const uint8_t mpz = pdec->sd_message[z]; // Store pattern for further processing
 
 					if (((isLong(mpz) == false) && (isShort(mpz) == false)) || (z == (pdec->messageLen - 1)))
 					{  
@@ -2320,7 +2320,7 @@ const bool ManchesterpatternDecoder::isManchester()
 						}
 					
 						int8_t seq_found = -1;
-						uint8_t seq = (mpz * 10) + pdec->message[z + 1];
+						uint8_t seq = (mpz * 10) + pdec->sd_message[z + 1];
 
 						if (seq < 10) seq += 100;
 					

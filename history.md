@@ -33,53 +33,53 @@ Dependency Graph
 
 |-- <WiFiManager> 2.0.4-beta+sha.a83ac6e
 
- |   |-- <DNSServer> 1.1.0
+ |   |  <DNSServer> 1.1.0
 
- |   |   |-- <WiFi> 1.0
+ |   |   | <WiFi> 1.0
 
- |   |-- <ESPmDNS> 1.0
+ |   | <ESPmDNS> 1.0
 
- |   |   |-- <WiFi> 1.0
+ |   |   | <WiFi> 1.0
 
- |   |-- <Update> 1.0
+ |   | <Update> 1.0
 
- |   |-- <WebServer> 1.0
+ |   | <WebServer> 1.0
 
- |   |   |-- <WiFi> 1.0
+ |   |   | <WiFi> 1.0
 
- |   |   |-- <FS> 1.0
+ |   |   | <FS> 1.0
  
- |   |-- <WiFi> 1.0
+ |   | <WiFi> 1.0
 
- |-- <bitstore> 1.0.0
+ | <bitstore> 1.0.0
 
- |-- <output> 1.0.0
+ | <output> 1.0.0
 
- |   |-- <SPI> 1.0
+ |   | <SPI> 1.0
  
- |   |-- <WiFi> 1.0
+ |   | <WiFi> 1.0
 
- |-- <signaldecoder> 1.0.0
+ | <signaldecoder> 1.0.0
 
- |   |-- <bitstore> 1.0.0
+ |   | <bitstore> 1.0.0
 
- |   |-- <output> 1.0.0
+ |   | <output> 1.0.0
 
- |   |   |-- <SPI> 1.0
+ |   |   | <SPI> 1.0
 
- |   |   |-- <WiFi> 1.0
+ |   |   | <WiFi> 1.0
 
- |-- <SimpleFIFO> 1.0.0
+ | <SimpleFIFO> 1.0.0
 
- |-- <DNSServer> 1.1.0
+ | <DNSServer> 1.1.0
 
- |   |-- <WiFi> 1.0
+ |   | <WiFi> 1.0
 
- |-- <SPI> 1.0
+ | <SPI> 1.0
 
- |-- <WiFi> 1.0
+ | <WiFi> 1.0
 
- |-- <EEPROM> 1.0.3
+ | <EEPROM> 1.0.3
 
  Building in release mode
 

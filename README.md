@@ -3,7 +3,7 @@ This Version was forked from Ralf9's version @  https://github.com/Ralf9/SIGNALD
 
 and ported to VSCode + Platformio.
 
-For a successful compile were to be done some cosmetics LONG WITH SOME other issues. ;-(
+For a successful compile were to be done some cosmetics along with some other issues. ;-(
 
 ## Changes:
 * WifiManager, with factory-reset over serial 

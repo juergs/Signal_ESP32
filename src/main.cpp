@@ -1,15 +1,4 @@
 /*
-void setup() {
-  // put your setup code here, to run once:
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-*/
-
-
-/*
 *   RF_RECEIVER v4.xx for Arduino
 *   Sketch to use an arduino as a receiver/sending device for digital signals
 *
@@ -45,6 +34,9 @@ void loop() {
 *------------------------------------------------------------------------------------------
 
 *-----  fuer den MapleMini ist der core 1.9.0 erforderlich, der core 2.0.0 hat noch einen bug in der SerialUSB ------
+*
+* C:\Users\js\.platformio\packages\framework-arduinoespressif32\libraries\WiFi\src
+*
 */
 //-----------------------------------------------------------------------
 #include <Arduino.h>
@@ -93,8 +85,8 @@ void loop() {
 	#define PIN_RECEIVE_A        pinReceive[0]   // gdo2 cc1101 A
 	#define PIN_RECEIVE_B        pinReceive[1]   // gdo2 cc1101 B
 #elif EVIL_CROW_RF
-	const uint8_t pinSend[] = {2, 26};
-	const uint8_t pinReceive[] = {4, 25, 14, 21};
+	const uint8_t pinSend[] 	= {2, 26};
+	const uint8_t pinReceive[] 	= {4, 25, 14, 21};
 	#define PIN_LED              13
 	#define PIN_RECEIVE_A        pinReceive[0]   // gdo2 cc1101 A
 	#define PIN_RECEIVE_B        pinReceive[1]   // gdo2 cc1101 B
@@ -165,8 +157,8 @@ Callee rssiCallee;
 	//needed for library
 	#include <DNSServer.h>
   
-	const char* ssid 	 = "...";
-	const char* password = "...";
+	// const char* ssid 	 = "...";
+	// const char* password = "...";
 
 	WiFiServer Server(23);  //  port 23 = telnet
 	WiFiClient client;
@@ -405,8 +397,8 @@ uint8_t  radioDetekt(bool confmode, uint8_t Dstat);
 //void getFunctions(bool *ms,bool *mu,bool *mc, bool *red, bool *deb, bool *led, bool *overfl);
 
 #ifdef ESP32
-	const char sos_sequence[] = "0101010001110001110001110001010100000000";
-	const char boot_sequence[] = "00010100111";
+	const char sos_sequence[]   = "0101010001110001110001110001010100000000";
+	const char boot_sequence[]  = "00010100111";
 
 	void ICACHE_RAM_ATTR sosBlink (void *pArg) 
 	{
@@ -475,7 +467,7 @@ void setup()
 
 		if ( !wm.autoConnect() ) 
 		{
-			Serial.println(F("failed to connect and hit timeout"));
+			Serial.println(F("failed to connect and hit timeout. Reset!"));
 			//--- reset and try again, or maybe put it to deep sleep
 			ESP.restart();
 			delay(3000);
@@ -515,6 +507,7 @@ void setup()
 		server.begin();		// start listening for clients
 
 	#elif defined(ESP32)
+
 		WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) 
 		{
 			Server.begin();  // start telnet server
@@ -532,16 +525,16 @@ void setup()
 		blinksos_args.dispatch_method = ESP_TIMER_TASK;
 		blinksos_args.name = "blinkSOS";
 		blinksos_args.arg = (void *)boot_sequence;
+		
 		esp_timer_create(&blinksos_args, &blinksos_handle);
 		esp_timer_start_periodic(blinksos_handle, 300000);
 				
-		WiFi.begin(ssid, password);
+		// WiFi.begin(ssid, password);
 		uint8_t i = 0;
-		while (WiFi.status() != WL_CONNECTED && i++ < 20) delay(500);
-		Serial.print("i=");
-		Serial.println(i);
-		Serial.print(WiFi.localIP());
-		Serial.println(" 23' to connect");
+		while (WiFi.status() != WL_CONNECTED && i++ < 20) delay(500);		
+		DUMP(i); 
+		Serial.print(WiFi.localIP()); Serial.println(":23' to connect");
+		
 	#else
 		if (tools::EEread(addr_rxRes) == 0xA5) {	// wenn A5 dann bleibt rx=0 und es gibt keine "Unsupported command" Meldungen
 			unsuppCmdEnable = false;
@@ -573,7 +566,8 @@ void setup()
 	MSG_PRINTLN(sichBackupReg);
 	setBackupReg(0);
 #endif
-	if (musterDecB.MdebEnabled) {
+	if (musterDecB.MdebEnabled) 
+	{
 		DBG_PRINTLN(F("Using sFIFO"));
 	}
 #ifdef MAPLE_WATCHDOG
@@ -607,7 +601,9 @@ void setup()
 
 	wdt_enable(WDTO_2S);  	// Enable Watchdog
 #endif
-	
+
+TRACE(); 
+
 //delay(2000);
 pinAsInput(PIN_RECEIVE_A);
 pinAsInput(PIN_RECEIVE_B);
@@ -621,12 +617,15 @@ pinAsInput(pinSend[1]);
 	wdt_reset();
 #endif
 
+TRACE(); 
 setHasCC1101(tools::EEread(CSetAddr[10]));	// onlyRXB - keine cc1101
 
 #ifdef CMP_CC1101
+	TRACE(); 
 	if (hasCC1101) cc1101::setup();
 #endif
 
+TRACE(); 
 initEEPROM();
 
 uint8_t statRadio;
@@ -634,6 +633,7 @@ uint8_t statRadio;
 #ifdef CMP_CC1101
   if (hasCC1101) 
   {
+	TRACE();
 	MSG_PRINTLN(F("CCInit"));
 	for (radionr = 0; radionr < 4; radionr++) 
 	//--- init radios
@@ -816,6 +816,9 @@ void setHasCC1101(uint8_t val)
 	{
 		hasCC1101 = true;
 	}
+	
+	DUMP(hasCC1101);
+
 	musterDecA.hasCC1101 = hasCC1101;
 	musterDecB.hasCC1101 = hasCC1101;
 }
@@ -887,6 +890,10 @@ void loop()
 	tmpBank = radio_bank[radionr];
 	bankoff = getBankOffset(tmpBank);
 	ccmode = tools::EEread(bankoff + addr_ccmode);
+
+	DUMP(tmpBank); 
+	DUMP(bankoff); 
+	DUMP(ccmode); 
 
 	if (ccmode == 0) 
 	{
@@ -2838,6 +2845,7 @@ uint8_t radioDetekt(bool confmode, uint8_t Dstat)
 //--------------------------------------------------------------------------------	
 inline void configRadio()
 {
+	TRACE(); 
 	uint8_t remRadionr;	// Radionr merken
 	
 	if (cmdstring.charAt(3) >= 'A' && cmdstring.charAt(3) <= 'D') {
@@ -2858,20 +2866,27 @@ inline void configRadio()
 			tools::EEwrite(addr_statRadio+radionr,0xFF);
 			tools::EEstore();
 			radio_bank[radionr] = 0xFF;
-			if (radionr == tools::EEread(addr_selRadio) && radionr != remRadionr) {	// wurde das im EEPROM gemerkte selektierte Radio deaktiviert und ist ungleich der aktuell selektierten
+			if (radionr == tools::EEread(addr_selRadio) && radionr != remRadionr) 
+			{	// wurde das im EEPROM gemerkte selektierte Radio deaktiviert und ist ungleich der aktuell selektierten
 				tools::EEwrite(addr_selRadio, remRadionr);
 				tools::EEstore();
 			}
-			if (radionr == remRadionr) {	// wurde das selektierte Radio deaktiviert?
+			if (radionr == remRadionr) 
+			{	// wurde das selektierte Radio deaktiviert?
 				remRadionr = 4;
 				radionr = 4;
-				do {
+				
+				do 
+				{
 					radionr--;
 					if (radio_bank[radionr] < 10) {	// ist Radio aktiv, dann merken
 						remRadionr = radionr;
 					}
 				} while (radionr > 0);
-				if (remRadionr == 4) {	// wurde kein aktives Radio gefunden?
+
+				if (remRadionr == 4) 
+				{	
+					// wurde kein aktives Radio gefunden?
 					remRadionr = defSelRadio;
 				}
 				tools::EEwrite(addr_selRadio, remRadionr);
@@ -2893,29 +2908,36 @@ inline void configRadio()
 //--------------------------------------------------------------------------------
 #ifdef ESP32
 	inline void WiFiEvent()
-	{
-	//check if there are any new clients
-	if (Server.hasClient()) {
-		if (!client || !client.connected()) {
-		if (client) client.stop();
-		client = Server.available();
-		client.flush();
-		//DBG_PRINTLN("New client: ");
-		//DBG_PRINTLN(client.remoteIP());
-		} else {
-		WiFiClient rejectClient = Server.available();
-		rejectClient.stop();
-		//DBG_PRINTLN("Reject new Client: ");
-		//DBG_PRINTLN(rejectClient.remoteIP());
+	{		
+		//check if there are any new clients
+		if (Server.hasClient()) 
+		{
+			if (!client || !client.connected()) 
+			{
+				TRACE(); 
+				if (client) client.stop();
+				client = Server.available();
+				client.flush();
+				//DBG_PRINTLN("New client: ");
+				//DBG_PRINTLN(client.remoteIP());
+			} 
+			else 
+			{
+				TRACE(); 
+				WiFiClient rejectClient = Server.available();
+				rejectClient.stop();
+				//DBG_PRINTLN("Reject new Client: ");
+				//DBG_PRINTLN(rejectClient.remoteIP());
+			}
 		}
-	}
 
-	if(client && !client.connected())
-	{
-		//DBG_PRINTLN("Client disconnected: ");
-		//DBG_PRINTLN(client.remoteIP());
-		client.stop();
-	}
+		if(client && !client.connected())
+		{
+			TRACE(); 
+			//DBG_PRINTLN("Client disconnected: ");
+			//DBG_PRINTLN(client.remoteIP());
+			client.stop();
+		}
 	}
 #endif
 
